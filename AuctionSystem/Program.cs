@@ -1,3 +1,6 @@
+using AuctionSystem.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace AuctionSystem
 {
     public class Program
@@ -8,6 +11,8 @@ namespace AuctionSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<AuctionDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
 
             var app = builder.Build();
 
