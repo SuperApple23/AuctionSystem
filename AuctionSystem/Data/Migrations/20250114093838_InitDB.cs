@@ -67,11 +67,11 @@ namespace AuctionSystem.Data.Migrations
                 columns: table => new
                 {
                     ProductId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    ProductName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ListedPrice = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MainImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StatusId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>

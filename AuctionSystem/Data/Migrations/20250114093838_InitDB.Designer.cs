@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuctionSystem.Data.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20250113082716_InitDB")]
+    [Migration("20250114093838_InitDB")]
     partial class InitDB
     {
         /// <inheritdoc />
@@ -124,13 +124,11 @@ namespace AuctionSystem.Data.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("MainImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
