@@ -5,6 +5,7 @@ using AuctionSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.PortableExecutable;
 
 namespace AuctionSystem.Controllers
 {
@@ -73,6 +74,55 @@ namespace AuctionSystem.Controllers
 
 			ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name");
 			return View(product);
+		}
+
+		public async Task<IActionResult> Detail(string id)
+		{
+			if (id == null)
+				return NotFound();
+
+			var product = await _context.Products
+										 .Include(p => p.Status)
+										 .Include(p => p.Images)
+										 .FirstOrDefaultAsync(p => p.ProductId == id);
+			
+			if (product == null)
+				return NotFound();
+			return View(product);
+		}
+
+		public async Task<IActionResult> Edit(string id)
+		{
+			if (id == null)
+				return NotFound();
+
+			var product = await _context.Products
+										.Include(p => p.Status)
+										.FirstOrDefaultAsync(x => x.ProductId == id);
+			if (product == null)
+				return NotFound();
+
+			ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", product.StatusId);
+			return View(product.ToProductEdit());
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(string id, [Bind("ProductId, ProductName, Description, ListedPrice, Quantity, StatusId, ExistingMainImage")] ProductEditViewModel productEdit)
+		{
+			if (id != productEdit.ProductId)
+			{
+				return NotFound();
+			}
+
+			if (ModelState.IsValid)
+			{
+				_context.Products.Update(productEdit.ToProduct());
+				await _context.SaveChangesAsync();
+				return RedirectToAction("Index");
+			}
+
+			ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name", productEdit.StatusId);
+			return View(productEdit);
 		}
 
 		private async Task<string> UploadImage(IFormFile file)

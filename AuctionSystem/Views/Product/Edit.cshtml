@@ -1,15 +1,18 @@
-﻿@model Product
+﻿@model ProductEditViewModel
+
 @{
-	ViewData["Title"] = "Tạo vật phẩm";
+	ViewData["Title"] = "Sửa vật phẩm";
 }
-<h3>Tạo vật phẩm</h3>
+
+<h3>Sửa vật phẩm</h3>
 <hr />
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+	<input hidden asp-for="ExistingMainImage" />
 	<div class="row mb-4">
 		<div class="col-md-5">
 			<div class="mb-3">
 				<label asp-for="ProductId" class="form-label">Mã vật phẩm</label>
-				<input asp-for="ProductId" class="form-control" />
+				<input asp-for="ProductId" class="form-control" readonly />
 				<span asp-validation-for="ProductId" class="text-danger"></span>
 			</div>
 			<div class="mb-3">
@@ -33,22 +36,13 @@
 			</div>
 		</div>
 		<div class="col-md-5">
-			<div class="mb-3">
-				<label asp-for="MainImageFile" class="form-label">Hình ảnh chính</label>
-				<input asp-for="MainImageFile" class="form-control" accept="image/*"/>
-				<span asp-validation-for="MainImageFile" class="text-danger"></span>
-			</div>
-			<div class="mb-3">
-				<label asp-for="OtherImageFile" class="form-label">Các hình ảnh khác</label>
-				<input asp-for="OtherImageFile" class="form-control" accept="image/*" />
-			</div>
 			<div>
 				<label asp-for="Description" class="form-label">Mô tả</label>
 				<textarea asp-for="Description" class="form-control" style="resize:none;height:150px"></textarea>
 			</div>
 		</div>
 	</div>
-	<button type="submit" class="btn btn-primary">Thêm</button>
+	<button type="submit" class="btn btn-primary">Sửa</button>
 	<a asp-action="Index" class="btn btn-secondary">Trở về</a>
 
 </form>

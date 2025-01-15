@@ -1,0 +1,62 @@
+﻿@model Product
+@{
+	ViewData["Title"] = "Thông tin vật phẩm";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Product</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ListedPrice)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ListedPrice)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Quantity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Quantity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MainImageFile)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/image/@Model.MainImage" width="200px" />
+        </dd>
+        @if(Model.Images!.Count > 0)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OtherImageFile)
+            </dt>
+            <dd class="col-sm-10">
+                @foreach(var image in Model.Images)
+                {
+                    <img src="~/image/@image.ImageUrl" width="200px" />
+                }
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StatusId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Status!.Name)
+        </dd>
+    </dl>
+</div>
+<a asp-action="Index" class="btn btn-secondary">Trở về</a>
