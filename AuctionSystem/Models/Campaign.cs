@@ -3,28 +3,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AuctionSystem.Models
 {
-    public class Campaign
-    {
-        [Key]
-        public int CampaignId { get; set; }
+	public class Campaign
+	{
+		[Key]
+		[Display(Name = "Mã chiến dịch")]
+		public int CampaignId { get; set; }
 
-        [Required]
-        [StringLength(500)]
-        public required string CampaignName { get; set; }
+		[StringLength(500)]
+		[Display(Name = "Tên chiến dịch")]
+		[Required(ErrorMessage = "{0} là bắt buộc")]
+		public string? CampaignName { get; set; }
 
-        public int Description { get; set; }
+		[Display(Name = "Mô tả")]
+		public string? Description { get; set; }
 
-        [Required]
-        public DateTime StartDateTime { get; set; }
+		[Required(ErrorMessage = "Yêu cầu phải có Ngày {0}")]
+		[Display(Name = "Bắt đầu")]
+		public DateTime StartDateTime { get; set; }
 
-        [Required]
-        public DateTime EndDateTime { get; set; }
+		[Required(ErrorMessage = "Yêu cầu phải có Ngày {0}")]
+		[Display(Name = "Kết thúc")]
+		public DateTime EndDateTime { get; set; }
 
-        public int SalesMethodId { get; set; }
+		public int SalesMethodId { get; set; }
 
-        [ForeignKey("SalesMethodId")]
-        public SalesMethod? SalesMethod { get; set; }
+		[ForeignKey("SalesMethodId")]
+		[Display(Name = "Phương thức bán hàng")]
+		public SalesMethod? SalesMethod { get; set; }
 
-        public ICollection<Auction>? Auctions { get; set; }
-    }
+		public List<Auction> Auctions { get; set; } = new List<Auction>();
+	}
 }

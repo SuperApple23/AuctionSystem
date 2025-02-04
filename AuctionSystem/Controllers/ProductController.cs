@@ -1,5 +1,5 @@
 ﻿using AuctionSystem.Data;
-using AuctionSystem.Helper;
+using AuctionSystem.Mapper;
 using AuctionSystem.Models;
 using AuctionSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +38,7 @@ namespace AuctionSystem.Controllers
 
 		public IActionResult Create()
 		{
-			ViewData["StatusId"] = new SelectList(_context.Statuses, "Id", "Name");
+			ViewData["StatusList"] = new SelectList(_context.Statuses, "Id", "Name");
 			return View();
 		}
 

@@ -1,0 +1,13 @@
+﻿@model Campaign
+@{
+	ViewData["Title"] = "Xóa chiến dịch đấu giá";
+}
+
+<div>Tạo hẳn 1 page chỉ để xóa trông không ổn lắm</div>
+<div>@Model.CampaignId - @Model.CampaignName</div>
+
+<form asp-action="Delete" method="post">
+	<input type="hidden" asp-for="CampaignId" />
+	<input type="submit" class="btn btn-danger" value="Delete" />
+	<a asp-controller="Campaign" asp-action="Index" class="btn btn-secondary">Trở về</a>
+</form>

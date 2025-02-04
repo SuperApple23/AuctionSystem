@@ -1,9 +1,9 @@
 ﻿using AuctionSystem.Models;
 using AuctionSystem.ViewModels;
 
-namespace AuctionSystem.Helper
+namespace AuctionSystem.Mapper
 {
-	public static class ProductHelper
+	public static class ProductMapper
 	{
 		public static ProductIndexViewModel ToProductDetail(this Product product)
 		{

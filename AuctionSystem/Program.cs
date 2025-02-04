@@ -13,6 +13,10 @@ namespace AuctionSystem
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AuctionDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString")));
+            builder.Services.AddSession(options =>
+            {
+
+            });
 
             var app = builder.Build();
 
@@ -30,6 +34,7 @@ namespace AuctionSystem
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",

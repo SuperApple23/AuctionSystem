@@ -8,23 +8,26 @@ namespace AuctionSystem.Models
         [Key]
         public int Id { get; set; }
 
-        public string? ProductId { get; set; }
+		[ForeignKey("ProductId")]
+		public string? ProductId { get; set; }
 
-        [ForeignKey("ProductId")]
         public Product? Product { get; set; }
-
-        public int CampaignId { get; set; }
-
+		
         [ForeignKey("CampaignId")]
+		public int CampaignId { get; set; }
+
         public Campaign? Campaign { get; set; }
 
-        [Required]
-        public double StartingPrice { get; set; }
+        [Display(Name ="Giá khởi điểm")]
+		[Required(ErrorMessage ="{0} lả bắt buộc")]
+		public double StartingPrice { get; set; }
 
-        [Required]
-        public double InstantSellPrice { get; set; }
+		[Display(Name = "Giá mua ngay")]
+		[Required(ErrorMessage = "{0} lả bắt buộc")]
+		public double InstantSellPrice { get; set; }
 
-        [Required]
-        public double MinimumPriceIncrement { get; set; }
+		[Display(Name = "Bước giá tối thiểu")]
+		[Required(ErrorMessage = "{0} lả bắt buộc")]
+		public double MinimumPriceIncrement { get; set; }
     }
 }
