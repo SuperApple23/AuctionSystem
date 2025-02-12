@@ -2,13 +2,14 @@
 using AuctionSystem.Mapper;
 using AuctionSystem.Models;
 using AuctionSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.PortableExecutable;
 
 namespace AuctionSystem.Controllers
 {
+	[Authorize]
 	public class ProductController : Controller
 	{
 		private readonly AuctionDbContext _context;
@@ -53,7 +54,7 @@ namespace AuctionSystem.Controllers
 					return View(product);
 				}
 
-				product.MainImage = await UploadImage(product.MainImageFile);
+				product.MainImage = await UploadImage(product.MainImageFile!);
 
 				if (product.OtherImageFile != null)
 				{

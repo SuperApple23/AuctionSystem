@@ -1,0 +1,65 @@
+﻿@model RegisterViewModel;
+
+@{
+	ViewData["Tilte"] = "Đăng ký";
+	Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<div class="account-container">
+	<div class="account-box register-box">
+		<h2 class="text-center mb-4">Đăng ký</h2>
+		<form asp-action="Register" method="Post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="row mb-3">
+				<label asp-for="FullName" class="col-sm-3 col-form-label"></label>
+				<div class="col-sm-9">
+					<input asp-for="FullName" class="form-control" />
+					<span asp-validation-for="FullName" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label asp-for="Email" class="col-sm-3 col-form-label"></label>
+				<div class="col-sm-9">
+					<input asp-for="Email" class="form-control" />
+					<span asp-validation-for="Email" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label asp-for="Address" class="col-sm-3 col-form-label"></label>
+				<div class="col-sm-9">
+					<input asp-for="Address" class="form-control" />
+					<span asp-validation-for="Address" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label asp-for="Password" class="col-sm-3 col-form-label"></label>
+				<div class="col-sm-9">
+					<input asp-for="Password" class="form-control" />
+					<span asp-validation-for="Password" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label asp-for="ComfirmPassword" class="col-sm-3 col-form-label"></label>
+				<div class="col-sm-9">
+					<input asp-for="ComfirmPassword" class="form-control" />
+					<span asp-validation-for="ComfirmPassword" class="text-danger"></span>
+				</div>
+			</div>
+			<div class="text-center">
+				<input type="submit" value="Đăng ký" class="btn btn-primary w-100 p-2" />
+			</div>
+			<p class="text-center mt-2">
+				Đã có tài khoản? <a asp-controller="Account" asp-action="Login" class="text-decoration-none">Đăng nhập</a>
+			</p>
+			<div class="text-center mt-3">
+				<a asp-controller="Home" asp-action="Index" class="text-decoration-none">Trở lại</a>
+			</div>
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

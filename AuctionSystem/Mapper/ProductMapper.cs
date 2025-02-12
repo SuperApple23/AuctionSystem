@@ -9,8 +9,8 @@ namespace AuctionSystem.Mapper
 		{
 			return new ProductIndexViewModel()
 			{
-				ProductId = product.ProductId,
-				ProductName = product.ProductName,
+				ProductId = product.ProductId!,
+				ProductName = product.ProductName!,
 				ListedPrice = product.ListedPrice,
 				Quantity = product.Quantity,
 				Status = product.Status,
@@ -22,8 +22,8 @@ namespace AuctionSystem.Mapper
 		{
 			return new ProductEditViewModel()
 			{
-				ProductId = product.ProductId,
-				ProductName = product.ProductName,
+				ProductId = product.ProductId!,
+				ProductName = product.ProductName!,
 				ListedPrice = product.ListedPrice,
 				Quantity = product.Quantity,
 				Description = product.Description,

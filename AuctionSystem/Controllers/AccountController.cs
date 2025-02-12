@@ -1,0 +1,89 @@
+﻿using AuctionSystem.Models;
+using AuctionSystem.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AuctionSystem.Controllers
+{
+	public class AccountController : Controller
+	{
+		private readonly SignInManager<AppUser> _signInManager;
+		private readonly UserManager<AppUser> _userManager;
+
+		public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+		{
+			_signInManager = signInManager;
+			_userManager = userManager;
+		}
+
+		public IActionResult Login()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Login(LoginViewModel loginVM)
+		{
+			if (ModelState.IsValid)
+			{
+				var result = await _signInManager.PasswordSignInAsync(loginVM.Email!, loginVM.Password!, loginVM.RememberMe, lockoutOnFailure: false);
+
+				if (result.Succeeded)
+				{
+					return RedirectToAction("Index", "Home");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Email hoặc mật khẩu không chính xác");
+					return View(loginVM);
+				}
+			}
+			return View(loginVM);
+		}
+
+		public IActionResult Register()
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Register(RegisterViewModel registerVM)
+		{
+			if (ModelState.IsValid)
+			{
+				AppUser user = new AppUser()
+				{
+					FullName = registerVM.FullName,
+					Address = registerVM.Address,
+					Email = registerVM.Email,
+					UserName = registerVM.Email
+				};
+
+				var result = await _userManager.CreateAsync(user, registerVM.Password!);
+
+				if (result.Succeeded)
+				{
+					return RedirectToAction("Login", "Account");
+				}
+				else
+				{
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError("", error.Description);
+					}
+
+					return View(registerVM);
+				}
+			}
+			return View(registerVM);
+		}
+
+		public async Task<IActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			return RedirectToAction("Index", "Home");
+		}
+	}
+}
