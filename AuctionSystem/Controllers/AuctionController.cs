@@ -1,5 +1,6 @@
 ﻿using AuctionSystem.Data;
 using AuctionSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AuctionSystem.Controllers
 {
+	[Authorize(Roles = "Admin")]
 	public class AuctionController : Controller
 	{
 		private readonly AuctionDbContext _context;

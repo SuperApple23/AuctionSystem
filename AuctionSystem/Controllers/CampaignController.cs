@@ -1,9 +1,11 @@
 ﻿using AuctionSystem.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuctionSystem.Controllers
 {
+	[Authorize(Roles = "Admin")]
     public class CampaignController : Controller
     {
 		private readonly AuctionDbContext _context;

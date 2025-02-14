@@ -26,5 +26,10 @@ namespace AuctionSystem.ViewModels
 		[Required(ErrorMessage = "Bắt buộc phải có {0}")]
 		[Display(Name = "Địa chỉ")]
 		public string? Address { get; set; }
+
+		[Required(ErrorMessage = "Bắt buộc phải có {0}")]
+		[Display(Name = "Số điện thoại")]
+		[DataType(DataType.PhoneNumber)]
+		public string? PhoneNumber { get; set; }
 	}
 }

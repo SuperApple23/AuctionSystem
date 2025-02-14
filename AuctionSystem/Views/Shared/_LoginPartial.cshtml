@@ -1,8 +1,17 @@
 ﻿@inject SignInManager<AppUser> signInManager
+@inject UserManager<AppUser> userManager
 
 <ul class="navbar-nav ms-auto">
 	@if (signInManager.IsSignedIn(User))
 	{
+		var user = await userManager.GetUserAsync(User);
+		var fullname = user!.FullName;
+
+		<li class="nav-item">
+			<a class="nav-link text-dark" asp-controller="" asp-action="">
+				@fullname
+			</a>
+		</li>
 		<li class="nav-item">
 			<a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">
 				<i class="bi bi-box-arrow-right"></i>

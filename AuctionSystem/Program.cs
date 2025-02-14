@@ -8,7 +8,7 @@ namespace AuctionSystem
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 			var connectionString = builder.Configuration.GetConnectionString("DefaultConnectionString");
@@ -62,6 +62,8 @@ namespace AuctionSystem
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			await app.SeedDatabase();
 
 			app.Run();
 		}

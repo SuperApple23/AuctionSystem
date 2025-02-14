@@ -29,27 +29,3 @@ body {
     display: block;
 }
 
-.ProductTable table {
-    width: 100%;
-}
-
-.ProductTable thead {
-    width: calc(100%-1em);
-}
-
-.ProductTable tbody {
-    display: block;
-    height: 200px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
-
-    .ProductTable thead, .ProductTable tbody tr {
-        display: table;
-        width: 98%;
-        table-layout: fixed;
-    }
-
-.ProductTable thead, .ProductTable tbody, .ProductTable td {
-    border: none !important;
-}

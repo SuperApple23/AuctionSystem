@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionSystem.Controllers
 {
-	[Authorize]
+	[Authorize(Roles = "Admin")]
 	public class ProductController : Controller
 	{
 		private readonly AuctionDbContext _context;
@@ -44,7 +44,7 @@ namespace AuctionSystem.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create([Bind("ProductId, ProductName, Description, ListedPrice, Quantity, MainImageFile, OtherImageFile, StatusId")] Product product)
+		public async Task<IActionResult> Create(Product product)
 		{
 			if (ModelState.IsValid)
 			{
@@ -86,7 +86,7 @@ namespace AuctionSystem.Controllers
 										 .Include(p => p.Status)
 										 .Include(p => p.Images)
 										 .FirstOrDefaultAsync(p => p.ProductId == id);
-			
+
 			if (product == null)
 				return NotFound();
 			return View(product);
@@ -108,7 +108,7 @@ namespace AuctionSystem.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Edit(string id, [Bind("ProductId, ProductName, Description, ListedPrice, Quantity, StatusId, ExistingMainImage")] ProductEditViewModel productEdit)
+		public async Task<IActionResult> Edit(string id, ProductEditViewModel productEdit)
 		{
 			if (id != productEdit.ProductId)
 			{

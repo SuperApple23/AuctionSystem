@@ -9,11 +9,13 @@ namespace AuctionSystem.Controllers
 	{
 		private readonly SignInManager<AppUser> _signInManager;
 		private readonly UserManager<AppUser> _userManager;
+		private readonly RoleManager<IdentityRole> _roleManager;
 
-		public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+		public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			_signInManager = signInManager;
 			_userManager = userManager;
+			_roleManager = roleManager;
 		}
 
 		public IActionResult Login()
@@ -58,13 +60,24 @@ namespace AuctionSystem.Controllers
 					FullName = registerVM.FullName,
 					Address = registerVM.Address,
 					Email = registerVM.Email,
-					UserName = registerVM.Email
+					UserName = registerVM.Email,
+					PhoneNumber = registerVM.PhoneNumber
 				};
 
 				var result = await _userManager.CreateAsync(user, registerVM.Password!);
 
 				if (result.Succeeded)
 				{
+					var roleExist = await _roleManager.RoleExistsAsync("User");
+
+					if (!roleExist)
+					{
+						var role = new IdentityRole("User");
+						await _roleManager.CreateAsync(role);
+					}
+
+					await _userManager.AddToRoleAsync(user, "User");
+
 					return RedirectToAction("Login", "Account");
 				}
 				else
