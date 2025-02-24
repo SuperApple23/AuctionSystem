@@ -159,6 +159,31 @@ namespace AuctionSystem.Data.IdentityMigrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Bid",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AuctionId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bid", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bid_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Bid_Auctions_AuctionId",
+                        column: x => x.AuctionId,
+                        principalTable: "Auctions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -197,6 +222,16 @@ namespace AuctionSystem.Data.IdentityMigrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bid_AppUserId",
+                table: "Bid",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bid_AuctionId",
+                table: "Bid",
+                column: "AuctionId");
         }
 
         /// <inheritdoc />
@@ -216,6 +251,9 @@ namespace AuctionSystem.Data.IdentityMigrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Bid");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

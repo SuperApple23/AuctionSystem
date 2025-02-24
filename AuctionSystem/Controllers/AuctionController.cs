@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AuctionSystem.Areas.Admin.Controllers
+namespace AuctionSystem.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class HomeController : Controller
+	[Authorize]
+	public class AuctionController : Controller
 	{
 		public IActionResult Index()
 		{

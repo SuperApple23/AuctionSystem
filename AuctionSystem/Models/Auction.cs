@@ -29,5 +29,7 @@ namespace AuctionSystem.Models
 		[Display(Name = "Bước giá tối thiểu")]
 		[Required(ErrorMessage = "{0} lả bắt buộc")]
 		public double MinimumPriceIncrement { get; set; }
-    }
+
+		public ICollection<Bid>? Bids { get; set; }
+	}
 }

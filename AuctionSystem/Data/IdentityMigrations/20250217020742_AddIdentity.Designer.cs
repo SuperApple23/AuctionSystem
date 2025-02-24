@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AuctionSystem.Data.IdentityMigrations
 {
-    [DbContext(typeof(AccountDbContext))]
-    [Migration("20250212014331_AddIdentity")]
+    [DbContext(typeof(AuctionDbContext))]
+    [Migration("20250217020742_AddIdentity")]
     partial class AddIdentity
     {
         /// <inheritdoc />
@@ -24,6 +24,212 @@ namespace AuctionSystem.Data.IdentityMigrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AuctionSystem.Models.Auction", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CampaignId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("InstantSellPrice")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinimumPriceIncrement")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<double>("StartingPrice")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CampaignId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Auctions");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Bid", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("AuctionId");
+
+                    b.ToTable("Bid");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Campaign", b =>
+                {
+                    b.Property<int>("CampaignId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CampaignId"));
+
+                    b.Property<string>("CampaignName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("SalesMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("CampaignId");
+
+                    b.HasIndex("SalesMethodId");
+
+                    b.ToTable("Campaigns");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Image", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductId")
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Product", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ListedPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("MainImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.SalesMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SalesMethods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Đấu giá"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Flash Sale"
+                        });
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Mở"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Đóng"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Hết hàng"
+                        });
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -247,6 +453,69 @@ namespace AuctionSystem.Data.IdentityMigrations
                     b.HasDiscriminator().HasValue("AppUser");
                 });
 
+            modelBuilder.Entity("AuctionSystem.Models.Auction", b =>
+                {
+                    b.HasOne("AuctionSystem.Models.Campaign", "Campaign")
+                        .WithMany("Auctions")
+                        .HasForeignKey("CampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuctionSystem.Models.Product", "Product")
+                        .WithMany("Auctions")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Campaign");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Bid", b =>
+                {
+                    b.HasOne("AuctionSystem.Models.AppUser", "AppUser")
+                        .WithMany("Bids")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("AuctionSystem.Models.Auction", "Auction")
+                        .WithMany("Bids")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Auction");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Campaign", b =>
+                {
+                    b.HasOne("AuctionSystem.Models.SalesMethod", "SalesMethod")
+                        .WithMany()
+                        .HasForeignKey("SalesMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SalesMethod");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Image", b =>
+                {
+                    b.HasOne("AuctionSystem.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Product", b =>
+                {
+                    b.HasOne("AuctionSystem.Models.Status", "Status")
+                        .WithMany("Products")
+                        .HasForeignKey("StatusId");
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -296,6 +565,33 @@ namespace AuctionSystem.Data.IdentityMigrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Auction", b =>
+                {
+                    b.Navigation("Bids");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Campaign", b =>
+                {
+                    b.Navigation("Auctions");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Product", b =>
+                {
+                    b.Navigation("Auctions");
+
+                    b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.Status", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("AuctionSystem.Models.AppUser", b =>
+                {
+                    b.Navigation("Bids");
                 });
 #pragma warning restore 612, 618
         }

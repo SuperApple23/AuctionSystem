@@ -11,5 +11,6 @@ namespace AuctionSystem.Models
         [Required]
         public string? Address { get; set; }
 
-    }
+		public ICollection<Bid>? Bids { get; set; }
+	}
 }

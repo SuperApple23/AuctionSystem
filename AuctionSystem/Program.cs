@@ -16,10 +16,9 @@ namespace AuctionSystem
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddDbContext<AuctionDbContext>(options => options.UseSqlServer(connectionString));
-			builder.Services.AddDbContext<AccountDbContext>(options => options.UseSqlServer(connectionString));
 
 			builder.Services.AddIdentity<AppUser, IdentityRole>()
-				.AddEntityFrameworkStores<AccountDbContext>()
+				.AddEntityFrameworkStores<AuctionDbContext>()
 				.AddDefaultTokenProviders();
 
 			builder.Services.Configure<IdentityOptions>(options =>

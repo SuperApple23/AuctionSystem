@@ -8,7 +8,7 @@ namespace AuctionSystem.Data
 		public static async Task SeedDatabase(this WebApplication app)
 		{
 			var scope = app.Services.CreateScope();
-			var context = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
+			var context = scope.ServiceProvider.GetRequiredService<AuctionDbContext>();
 			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 			var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();

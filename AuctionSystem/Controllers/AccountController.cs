@@ -33,7 +33,19 @@ namespace AuctionSystem.Controllers
 
 				if (result.Succeeded)
 				{
-					return RedirectToAction("Index", "Home");
+					var user = await _userManager.FindByEmailAsync(loginVM.Email!);
+					if (user != null)
+					{
+						var roles = await _userManager.GetRolesAsync(user);
+						if (roles.Contains("Admin"))
+						{
+							return RedirectToAction("Index", "Home", new { area = "Admin" });
+						}
+						else
+						{
+							return RedirectToAction("Index", "Home");
+						}
+					}
 				}
 				else
 				{
@@ -97,6 +109,11 @@ namespace AuctionSystem.Controllers
 		{
 			await _signInManager.SignOutAsync();
 			return RedirectToAction("Index", "Home");
+		}
+
+		public IActionResult Profile()
+		{
+			return View();
 		}
 	}
 }
