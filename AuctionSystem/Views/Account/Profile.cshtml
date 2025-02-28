@@ -30,6 +30,7 @@
 		if (role.Contains("Admin"))
 		{
 			<a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn btn-secondary">Trở về</a>
+			Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 		}
 		else
 		{

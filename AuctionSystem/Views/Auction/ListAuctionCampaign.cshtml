@@ -1,0 +1,103 @@
+﻿@model List<AuctionCampaignViewModel>
+@{
+	ViewData["Title"] = "Danh sách chiến dịch";
+}
+
+<style>
+	.card {
+		width: 30em;
+		margin: 10px;
+		border-radius: 10px;
+	}
+
+		.card:hover {
+			box-shadow: -1px 9px 40px -12px #808080
+		}
+</style>
+
+<div class="row justify-content-center">
+	@foreach (var item in Model)
+	{
+		<div class="card">
+			<div class="card-body">
+				<div class="card-title">
+					<h4>@item.CampaignName</h4>
+				</div>
+				<div class="card-text row mb-2">
+					<div class="col-md-3">Mô tả:</div>
+					<div class="col">@item.Description</div>
+				</div>
+				<div class="card-text row mb-2">
+					<div class="col-md-3">Bắt đầu:</div>
+					<div class="col">@item.StartDateTime.ToString("dd/MM/yyyy HH:mm:ss")</div>
+				</div>
+				<div class="card-text row mb-2">
+					<div class="col-md-3">Kết thúc:</div>
+					<div class="col">@item.EndDateTime.ToString("dd/MM/yyyy HH:mm:ss")</div>
+				</div>
+				@if (item.StartDateTime <= DateTime.Now && item.EndDateTime >= DateTime.Now)
+				{
+					<div class="row">
+						<div class="col-md-6">
+							<span class="timer text-danger" data-end="@item.EndDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">Loading...</span>
+						</div>
+						<div class="col-md-6 text-end">
+							<a asp-action="ListAuctionProduct" asp-route-id="@item.CampaignId" class="btn btn-primary">Mua đồ</a>
+						</div>
+					</div>
+				}
+				else if (item.EndDateTime < DateTime.Now)
+				{
+					<div class="row">
+						<div class="col-md-6">
+							<span class="text-danger">Chiến dịch đã kết thúc</span>
+						</div>
+						<div class="col-md-6 text-end">
+							<a asp-action="ListAuctionProduct" asp-route-id="@item.CampaignId" class="btn btn-primary">Xem</a>
+						</div>
+					</div>
+				}
+				else if (item.StartDateTime > DateTime.Now)
+				{
+					<div class="card-text bg-warning text-white text-center">
+						Chiến dịch chưa bắt đầu
+					</div>
+				}
+			</div>
+		</div>
+	}
+</div>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<script>
+		$(document).ready(function () {
+			function updateCountdowns() {
+				var now = new Date().getTime();
+				$(".timer").each(function () {
+					var $this = $(this);
+					var endTime = new Date($this.data("end")).getTime();
+					var timeLeft = endTime - now;
+
+					if (timeLeft > 0) {
+						var hours = Math.floor(timeLeft / (1000 * 60 * 60));
+						var minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+						var seconds = Math.floor((timeLeft / 1000) % 60);
+
+						$this.text(
+							(hours < 10 ? "0" : "") + hours + ":" +
+							(minutes < 10 ? "0" : "") + minutes + ":" +
+							(seconds < 10 ? "0" : "") + seconds + " kết thúc"
+						);
+					}
+				});
+			}
+
+			setInterval(updateCountdowns, 1000);
+			updateCountdowns();
+		});
+
+	</script>
+}

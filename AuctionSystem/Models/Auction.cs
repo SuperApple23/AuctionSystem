@@ -8,12 +8,14 @@ namespace AuctionSystem.Models
         [Key]
         public int Id { get; set; }
 
+		[Required]
 		[ForeignKey("ProductId")]
 		public string? ProductId { get; set; }
 
         public Product? Product { get; set; }
-		
-        [ForeignKey("CampaignId")]
+
+		[Required]
+		[ForeignKey("CampaignId")]
 		public int CampaignId { get; set; }
 
         public Campaign? Campaign { get; set; }
