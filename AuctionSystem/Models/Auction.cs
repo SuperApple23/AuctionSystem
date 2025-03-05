@@ -33,5 +33,7 @@ namespace AuctionSystem.Models
 		public double MinimumPriceIncrement { get; set; }
 
 		public ICollection<Bid>? Bids { get; set; }
+
+		public int IsAuctionFinished { get; set; }
 	}
 }

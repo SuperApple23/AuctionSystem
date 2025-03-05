@@ -35,25 +35,14 @@
 					<div class="col-md-3">Kết thúc:</div>
 					<div class="col">@item.EndDateTime.ToString("dd/MM/yyyy HH:mm:ss")</div>
 				</div>
-				@if (item.StartDateTime <= DateTime.Now && item.EndDateTime >= DateTime.Now)
+				@if (item.StartDateTime <= DateTime.Now)
 				{
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-6 d-flex align-items-center">
 							<span class="timer text-danger" data-end="@item.EndDateTime.ToString("yyyy-MM-ddTHH:mm:ss")">Loading...</span>
 						</div>
 						<div class="col-md-6 text-end">
-							<a asp-action="ListAuctionProduct" asp-route-id="@item.CampaignId" class="btn btn-primary">Mua đồ</a>
-						</div>
-					</div>
-				}
-				else if (item.EndDateTime < DateTime.Now)
-				{
-					<div class="row">
-						<div class="col-md-6">
-							<span class="text-danger">Chiến dịch đã kết thúc</span>
-						</div>
-						<div class="col-md-6 text-end">
-							<a asp-action="ListAuctionProduct" asp-route-id="@item.CampaignId" class="btn btn-primary">Xem</a>
+							<a asp-action="ListAuctionProduct" asp-route-id="@item.CampaignId" class="btn btn-primary auction-btn">Mua đồ</a>
 						</div>
 					</div>
 				}
@@ -81,6 +70,8 @@
 					var endTime = new Date($this.data("end")).getTime();
 					var timeLeft = endTime - now;
 
+					var $auctionBtn = $this.closest(".row").find(".auction-btn");
+
 					if (timeLeft > 0) {
 						var hours = Math.floor(timeLeft / (1000 * 60 * 60));
 						var minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
@@ -91,6 +82,9 @@
 							(minutes < 10 ? "0" : "") + minutes + ":" +
 							(seconds < 10 ? "0" : "") + seconds + " kết thúc"
 						);
+					} else {
+						$this.text("Chiến dịch đã kết thúc");
+						$auctionBtn.text('Xem');
 					}
 				});
 			}

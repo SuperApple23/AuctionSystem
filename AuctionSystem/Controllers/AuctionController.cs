@@ -3,6 +3,7 @@ using AuctionSystem.Mapper;
 using AuctionSystem.Models;
 using AuctionSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,11 +14,13 @@ namespace AuctionSystem.Controllers
 	public class AuctionController : Controller
 	{
 		private readonly AuctionDbContext _context;
+		private readonly UserManager<AppUser> _userManager;
 		private readonly ILogger<AuctionController> _logger;
 
-		public AuctionController(AuctionDbContext context, ILogger<AuctionController> logger)
+		public AuctionController(AuctionDbContext context, UserManager<AppUser> userManager, ILogger<AuctionController> logger)
 		{
 			_context = context;
+			_userManager = userManager;
 			_logger = logger;
 		}
 
@@ -108,6 +111,18 @@ namespace AuctionSystem.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				var instantSellPrice = _context.Auctions
+											.Where(a => a.Id == bid.AuctionId)
+											.FirstOrDefault()!
+											.InstantSellPrice;
+				_logger.LogInformation(instantSellPrice.ToString());
+
+				if(bid.BidPrice >= instantSellPrice)
+				{
+					string sql = "UPDATE dbo.Auctions SET IsAuctionFinished = 1 WHERE Id = " + bid.AuctionId;
+					_context.Database.ExecuteSqlRaw(sql);
+				}
+
 				_context.Bids.Add(bid);
 				_context.SaveChanges();
 				return Json("Insert Successful");
@@ -115,5 +130,46 @@ namespace AuctionSystem.Controllers
 			return Json("Insert Failed");
 		}
 
+		[HttpGet]
+		public async Task<JsonResult> GetBuyers(string id)
+		{
+			List<BidUserViewModel> bidUserViewModels = new List<BidUserViewModel>();
+
+			int auctionId = Int32.Parse(id);
+			var user = await _userManager.GetUserAsync(User);
+
+			var bids = _context.Bids
+							.Include(b => b.AppUser)
+							.Where(b => b.AuctionId == auctionId)
+							.ToList();
+
+			foreach (Bid bid in bids)
+			{
+				if (user!.Id == bid.AppUserId)
+					bidUserViewModels.Add(bid.ToBidUser("Bạn"));
+				else
+					bidUserViewModels.Add(bid.ToBidUser(bid.AppUser!.FullName!));
+			}
+
+			return Json(bidUserViewModels);
+		}
+
+		[HttpPost]
+		public JsonResult UpdateEndEvent(string id)
+		{
+			int campaginId = Int32.Parse(id);
+
+			try
+			{
+				string sql = "UPDATE dbo.Auctions SET IsAuctionFinished = 1 WHERE CampaignId = " + campaginId;
+				int rowsAffected  = _context.Database.ExecuteSqlRaw(sql);
+
+				return Json(new { success = true, message = $"{rowsAffected} được cập nhật!" });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false, message = "Lỗi: " + ex.Message });
+			}
+		}
 	}
 }

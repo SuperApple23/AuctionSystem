@@ -2,7 +2,9 @@
 {
     public class AuctionProductViewModel
     {
-        public string? MainImage { get; set; }
+		public int AuctionId { get; set; }
+
+		public string? MainImage { get; set; }
 
         public string? ProductName { get; set; }
 
@@ -14,6 +16,8 @@
 
 		public double InstantSellPrice { get; set; }
 
-		public int AuctionId { get; set; }
+        public int NumberOfPeople { get; set; }
+
+        public int IsAuctionFinished { get; set; }
 	}
 }

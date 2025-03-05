@@ -22,6 +22,7 @@ namespace AuctionSystem.Mapper
 		public static AuctionProductViewModel ToAuctionProduct(this Auction auction)
 		{
 			double currentStartingPrice = 0;
+			int number = 0;
 			if (auction.Bids == null || auction.Bids.Count == 0)
 			{
 				currentStartingPrice = auction.StartingPrice;
@@ -29,17 +30,20 @@ namespace AuctionSystem.Mapper
 			else
 			{
 				currentStartingPrice = auction.Bids.LastOrDefault()!.BidPrice;
+				number = auction.Bids.Count;
 			}
 
 			return new AuctionProductViewModel()
 			{
+				AuctionId = auction.Id,
 				MainImage = auction.Product!.MainImage,
 				ProductName = auction.Product.ProductName,
 				ListedPrice = auction.Product.ListedPrice,
 				StartingPrice = currentStartingPrice,
 				MinimumPriceIncrement = auction.MinimumPriceIncrement,
-				AuctionId = auction.Id,
-				InstantSellPrice = auction.InstantSellPrice
+				InstantSellPrice = auction.InstantSellPrice,
+				NumberOfPeople = number,
+				IsAuctionFinished = auction.IsAuctionFinished
 			};
 		}
 	}

@@ -56,6 +56,14 @@ namespace AuctionSystem.Data
             modelBuilder.Entity<SalesMethod>().HasData(
                 new SalesMethod { Id = 1, Name = "Đấu giá" },
                 new SalesMethod { Id = 2, Name = "Flash Sale" });
+
+            modelBuilder.Entity<Bid>()
+                .Property(b => b.BidDate)
+                .HasDefaultValueSql("GETDATE()");
+
+            modelBuilder.Entity<Auction>()
+                .Property(a => a.IsAuctionFinished)
+                .HasDefaultValue(0);
         }
     }
 }

@@ -38,7 +38,7 @@
 
 	#productImg {
 		width: 100%; /* Chiều ngang luôn chiếm hết container */
-		height: 200px; /* Cố định chiều cao */
+		height: 180px; /* Cố định chiều cao */
 		object-fit: contain; /* Đảm bảo ảnh không bị méo, có thể có khoảng trắng */
 		display: block; /* Tránh khoảng trắng dưới ảnh */
 		border: 1px solid black;
@@ -55,53 +55,84 @@
 
 
 <div class="row justify-content-center" id="productCard">
+	@* <div class="card">
+		<div class="card-body">
+			<div class="img-container mb-2"><img src="/image/771f290d-feb2-49f3-a0fd-2dcd589a5f44_headphone_main.jpg" class="card-img-top" draggable="false" /></div>
+			<div class="card-title text-center"><h4>Tên vật phẩm</h4></div>
+			<div class="card-text row mb-2"><div class="col-md-6">Giá gốc</div><div class="col-md-6 text-end">Giá đấu hiện tại</div></div>
+			<div class="card-text row mb-2">
+				<div class="col-md-6">250.000</div>
+				<div class="col-md-6 text-end">100.000</div>
+			</div>
+			<div class="card-text row mb-2">
+				<div class="col-md-7">Bước giá tối thiểu:</div>
+				<div class="col-md-5 text-end">100</div>
+			</div>
+			<div class="row">
+				<div class="col-md-6 d-flex align-items-center">
+					2 lượt đấu giá
+				</div>
+				<div class="text-end col-md-6">
+					<button type="button" class="btn btn-primary">Đấu giá</button>
+				</div>
+			</div>
+		</div>
+	</div> *@
 </div>
 
 
 <div class="modal fade" id="bidModal" tabindex="-1" aria-labelledby="bidModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg">
+	<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="bidModalLabel">Đấu giá</h5>
 				<button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<form method="" action="">
-				<div class="modal-body">
+			<div class="modal-body">
+				<form method="" action="">
 					<input asp-for="AppUserId" hidden value="@id" />
 					<input asp-for="AuctionId" hidden />
 					<div class="row">
 						<div class="col-md-5">
-							<img id="productImg" />
+							<img id="productImg" draggable="false" />
+							<div class="text-center" id="productName"></div>
 						</div>
 						<div class="col-md-7">
 							<div class="row mb-3">
 								<div class="col-md-6">Giá đấu hiện tại:</div>
-								<div class="col-md-4 text-end" id="currentPrice"></div>
+								<div class="col-md-6 text-end" id="currentPrice"></div>
 							</div>
 							<div class="row mb-3">
 								<div class="col-md-6">Giá đấu tối thiểu tiếp theo:</div>
-								<div class="col-md-4 text-end" id="nextPrice"></div>
+								<div class="col-md-6 text-end" id="nextPrice"></div>
 								<input type="text" id="PredictPrice" hidden />
 							</div>
 							<div class="row mb-3">
 								<div class="col-md-6">Giá bán ngay:</div>
-								<div class="col-md-4 text-end" id="instantSellPrice"></div>
+								<div class="col-md-6 text-end" id="instantSellPrice"></div>
 							</div>
 							<div class="row mb-3">
 								<div class="col-md-4">Giá đấu tiếp theo:</div>
-								<div class="col-md-6">
+								<div class="col-md-8">
 									<input asp-for="BidPrice" class="form-control" />
 									<span asp-validation-for="BidPrice" class="text-danger"></span>
 								</div>
 							</div>
+							<div class="text-end">
+								<button type="button" class="btn btn-primary" onclick="InsertBid()">Đấu giá</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" onclick="InsertBid()">Đấu giá</button>
-				</div>
-			</form>
 
+					<div class="d-flex align-items-center">
+						<a id="numberOfPeople">0 lượt đấu giá</a>
+						<span id="arrow">&nbsp;&#9660;</span>
+					</div>
+					<div style="display: none;" id="listBid">
+						Super content
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

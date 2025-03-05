@@ -25,5 +25,7 @@ namespace AuctionSystem.Models
 		[Display(Name = "Giá đấu tiếp theo")]
 		[RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Đây phải là số nguyên")]
 		public double BidPrice { get; set; }
+
+		public DateTime? BidDate { get; set; }
 	}
 }
